@@ -15,6 +15,7 @@ import { UserDropdown } from "./components/UserDropdown";
 import { LandingPage } from "./components/LandingPage";
 import { FeedbackButton } from "./components/FeedbackButton";
 import { MenuIcon } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState<string>("home");
@@ -192,6 +193,7 @@ export default function App() {
       />
 
       <Toaster />
+      <Analytics />
     </div>
   );
 }
