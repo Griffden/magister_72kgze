@@ -183,3 +183,88 @@ export const updateChatTitle = internalMutation({
     await ctx.db.patch(args.chatId, { title: args.title });
   },
 });
+
+export const getByIdInternal = internalQuery({
+  args: { chatId: v.id("chats") },
+  handler: async (ctx, args) => {
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat) return null;
+
+    const mentor = await ctx.db.get(chat.mentorId);
+    return {
+      ...chat,
+      mentorName: mentor?.name || "Unknown Mentor",
+      mentorProfileImageUrl: mentor?.profileImage 
+        ? await ctx.storage.getUrl(mentor.profileImage)
+        : null,
+    };
+  },
+});
+
+export const getMessagesInternal = internalQuery({
+  args: { chatId: v.id("chats") },
+  handler: async (ctx, args) => {
+    const messages = await ctx.db
+      .query("messages")
+      .withIndex("by_chat", (q) => q.eq("chatId", args.chatId))
+      .order("asc")
+      .collect();
+
+    return Promise.all(
+      messages.map(async (message) => ({
+        ...message,
+        imageUrl: message.imageId 
+          ? await ctx.storage.getUrl(message.imageId)
+          : message.imageUrl,
+      }))
+    );
+  },
+});
+
+export const sendMessageInternal = internalMutation({
+  args: {
+    chatId: v.id("chats"),
+    content: v.string(),
+    isFromUser: v.boolean(),
+    imageId: v.optional(v.id("_storage")),
+  },
+  handler: async (ctx, args) => {
+    const chat = await ctx.db.get(args.chatId);
+    if (!chat) {
+      throw new Error("Chat not found");
+    }
+
+    let imageUrl: string | undefined;
+    if (args.imageId) {
+      imageUrl = (await ctx.storage.getUrl(args.imageId)) || undefined;
+    }
+
+    const messageId = await ctx.db.insert("messages", {
+      chatId: args.chatId,
+      userId: chat.userId,
+      mentorId: chat.mentorId,
+      content: args.content,
+      isFromUser: args.isFromUser,
+      imageId: args.imageId,
+      imageUrl,
+      timestamp: Date.now(),
+    });
+
+    // Update chat's last message time
+    await ctx.db.patch(args.chatId, {
+      lastMessageTime: Date.now(),
+    });
+
+    return messageId;
+  },
+});
+
+export const updateMessageContent = internalMutation({
+  args: {
+    messageId: v.id("messages"),
+    content: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.messageId, { content: args.content });
+  },
+});

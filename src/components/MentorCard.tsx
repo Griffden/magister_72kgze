@@ -5,11 +5,16 @@ interface MentorCardProps {
     bio: string;
     categories: string[];
     profileImageUrl?: string | null;
+    createdBy?: string;
   };
   onStartChat: () => void;
+  onOpenKnowledgeBase?: () => void;
+  currentUserId?: string;
 }
 
-export function MentorCard({ mentor, onStartChat }: MentorCardProps) {
+import { BookOpenIcon } from "lucide-react";
+
+export function MentorCard({ mentor, onStartChat, onOpenKnowledgeBase, currentUserId }: MentorCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
       <div className="flex items-start gap-4 mb-4">
@@ -43,12 +48,23 @@ export function MentorCard({ mentor, onStartChat }: MentorCardProps) {
       
       <p className="text-gray-600 text-sm mb-4 line-clamp-3">{mentor.bio}</p>
       
-      <button
-        onClick={onStartChat}
-        className="w-full px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover transition-colors font-medium"
-      >
-        Start Chat
-      </button>
+      <div className="flex gap-2">
+        <button
+          onClick={onStartChat}
+          className="flex-1 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-hover transition-colors font-medium"
+        >
+          Start Chat
+        </button>
+        {currentUserId && mentor.createdBy === currentUserId && onOpenKnowledgeBase && (
+          <button
+            onClick={onOpenKnowledgeBase}
+            className="px-3 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
+            title="Manage Knowledge Base"
+          >
+            <BookOpenIcon className="w-4 h-4" />
+          </button>
+        )}
+      </div>
     </div>
   );
 }

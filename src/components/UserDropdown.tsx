@@ -2,19 +2,21 @@ import { useState, useRef, useEffect } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
-import { ChevronDownIcon, UserIcon, SettingsIcon, LogOutIcon } from "lucide-react";
+import { ChevronDownIcon, UserIcon, SettingsIcon, LogOutIcon, UsersIcon } from "lucide-react";
 
 interface UserDropdownProps {
   user: any;
   onProfileClick: () => void;
   onAdminClick: () => void;
+  onMentorManagerClick: () => void;
 }
 
-export function UserDropdown({ user, onProfileClick, onAdminClick }: UserDropdownProps) {
+export function UserDropdown({ user, onProfileClick, onAdminClick, onMentorManagerClick }: UserDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { signOut } = useAuthActions();
   const userProfile = useQuery(api.users.getProfile);
+  const userMentors = useQuery(api.mentors.listByUser) || [];
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -43,6 +45,14 @@ export function UserDropdown({ user, onProfileClick, onAdminClick }: UserDropdow
     onAdminClick();
     setIsOpen(false);
   };
+
+  const handleMentorManagerClick = () => {
+    onMentorManagerClick();
+    setIsOpen(false);
+  };
+
+  // Show Mentor Manager only if user has created at least one mentor
+  const showMentorManager = userMentors.length > 0;
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -106,6 +116,19 @@ export function UserDropdown({ user, onProfileClick, onAdminClick }: UserDropdow
               <UserIcon className="w-4 h-4" />
               My Profile
             </button>
+
+            {showMentorManager && (
+              <button
+                onClick={handleMentorManagerClick}
+                className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                <UsersIcon className="w-4 h-4" />
+                Mentor Manager
+                <span className="ml-auto text-xs bg-primary text-white px-2 py-0.5 rounded-full">
+                  {userMentors.length}
+                </span>
+              </button>
+            )}
 
             {user?.isAdmin && (
               <button

@@ -12,7 +12,7 @@ interface GlobalChatSidebarProps {
 }
 
 export function GlobalChatSidebar({ onOpenChat, currentChatId, isOpen, onToggle }: GlobalChatSidebarProps) {
-  const chats = useQuery(api.chats.listByUser) || [];
+  const chats = useQuery(api.chats.list) || [];
   const [expandedMentors, setExpandedMentors] = useState<Set<string>>(new Set());
   const [showMentorMenu, setShowMentorMenu] = useState<string | null>(null);
   const [showChatMenu, setShowChatMenu] = useState<string | null>(null);
@@ -25,13 +25,16 @@ export function GlobalChatSidebar({ onOpenChat, currentChatId, isOpen, onToggle 
   const updateChatTitle = useMutation(api.chats.updateTitle);
 
   // Group chats by mentor
-  const chatsByMentor = chats.reduce((acc, chat) => {
-    if (!chat.mentor) return acc;
+  const chatsByMentor = chats.reduce((acc: any, chat: any) => {
+    if (!chat.mentorName) return acc;
     
     const mentorId = chat.mentorId;
     if (!acc[mentorId]) {
       acc[mentorId] = {
-        mentor: chat.mentor,
+        mentor: {
+          name: chat.mentorName,
+          profileImageUrl: chat.mentorProfileImageUrl,
+        },
         chats: [],
       };
     }
@@ -171,9 +174,9 @@ export function GlobalChatSidebar({ onOpenChat, currentChatId, isOpen, onToggle 
               </div>
             ) : (
               <div className="p-2 space-y-1">
-                {Object.entries(chatsByMentor).map(([mentorId, { mentor, chats }]) => {
+                {Object.entries(chatsByMentor).map(([mentorId, { mentor, chats }]: any) => {
                   const isExpanded = expandedMentors.has(mentorId);
-                  const sortedChats = chats.sort((a, b) => b._creationTime - a._creationTime);
+                  const sortedChats = chats.sort((a: any, b: any) => b.lastMessageTime - a.lastMessageTime);
                   
                   return (
                     <div key={mentorId} className="mb-2">
@@ -238,7 +241,7 @@ export function GlobalChatSidebar({ onOpenChat, currentChatId, isOpen, onToggle 
                       {/* Chat Sessions */}
                       {isExpanded && (
                         <div className="ml-4 space-y-1 mt-1">
-                          {sortedChats.map((chat) => (
+                          {sortedChats.map((chat: any) => (
                             <div key={chat._id} className="flex items-center gap-1">
                               <button
                                 onClick={() => {
@@ -262,7 +265,7 @@ export function GlobalChatSidebar({ onOpenChat, currentChatId, isOpen, onToggle 
                                     <div className={`text-xs mt-1 ${
                                       currentChatId === chat._id ? "text-white/80" : "text-gray-500"
                                     }`}>
-                                      {formatTimestamp(chat._creationTime)}
+                                      {formatTimestamp(chat.lastMessageTime)}
                                     </div>
                                   </div>
                                 </div>

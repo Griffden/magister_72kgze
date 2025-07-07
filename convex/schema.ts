@@ -35,13 +35,29 @@ const applicationTables = {
     personaPrompt: v.string(),
     profileImage: v.optional(v.id("_storage")),
     isActive: v.optional(v.boolean()),
+    chatCount: v.optional(v.number()),
+    createdBy: v.optional(v.id("users")),
+    rating: v.optional(v.number()),
+    ratingCount: v.optional(v.number()),
   }),
+
+  documents: defineTable({
+    mentorId: v.id("mentors"),
+    title: v.string(),
+    content: v.string(),
+    fileType: v.string(),
+    uploadedBy: v.id("users"),
+    isActive: v.optional(v.boolean()),
+  })
+    .index("by_mentor", ["mentorId"])
+    .index("by_mentor_and_active", ["mentorId", "isActive"]),
 
   chats: defineTable({
     userId: v.id("users"),
     mentorId: v.id("mentors"),
     title: v.string(),
     isActive: v.optional(v.boolean()),
+    lastMessageTime: v.optional(v.number()),
   })
     .index("by_user", ["userId"])
     .index("by_user_and_mentor", ["userId", "mentorId"]),
@@ -54,6 +70,7 @@ const applicationTables = {
     isFromUser: v.boolean(),
     imageId: v.optional(v.id("_storage")),
     imageUrl: v.optional(v.string()),
+    timestamp: v.optional(v.number()),
   })
     .index("by_chat", ["chatId"]),
 

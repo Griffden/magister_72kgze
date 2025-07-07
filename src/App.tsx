@@ -9,6 +9,8 @@ import { ChatPage } from "./components/ChatPage";
 import { CategoryPage } from "./components/CategoryPage";
 import { AdminPanel } from "./components/AdminPanel";
 import { ProfilePage } from "./components/ProfilePage";
+import { CreateMentorPage } from "./components/CreateMentorPage";
+import { MentorManagerPage } from "./components/MentorManagerPage";
 import { AuthModal } from "./components/AuthModal";
 import { GlobalChatSidebar } from "./components/GlobalChatSidebar";
 import { UserDropdown } from "./components/UserDropdown";
@@ -26,6 +28,7 @@ export default function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authAction, setAuthAction] = useState<"signin" | "signup">("signin");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [editingMentorId, setEditingMentorId] = useState<string | null>(null);
   
   const user = useQuery(api.auth.loggedInUser);
   const logoUrl = useQuery(api.admin.getLogo);
@@ -63,6 +66,27 @@ export default function App() {
     setCurrentPage("category");
   };
 
+  const handleCreateMentor = () => {
+    if (!user) {
+      setShowAuthModal(true);
+      setAuthAction("signin");
+      return;
+    }
+    setEditingMentorId(null);
+    setCurrentPage("create-mentor");
+  };
+
+  const handleEditMentor = (mentorId: string) => {
+    setEditingMentorId(mentorId);
+    setCurrentPage("create-mentor");
+  };
+
+  const handleMentorCreated = (mentorId: string) => {
+    setCurrentPage("home");
+    // Optionally start a chat with the newly created mentor
+    // handleStartChat(mentorId);
+  };
+
   const handleShowAuth = (mode: "signin" | "signup") => {
     setShowAuthModal(true);
     setAuthAction(mode);
@@ -96,11 +120,28 @@ export default function App() {
         return <AdminPanel onBack={() => setCurrentPage("home")} />;
       case "profile":
         return <ProfilePage onBack={() => setCurrentPage("home")} />;
+      case "create-mentor":
+        return (
+          <CreateMentorPage
+            onBack={() => setCurrentPage("home")}
+            onMentorCreated={handleMentorCreated}
+            editingMentorId={editingMentorId}
+          />
+        );
+      case "mentor-manager":
+        return (
+          <MentorManagerPage
+            onBack={() => setCurrentPage("home")}
+            onCreateMentor={handleCreateMentor}
+            onEditMentor={handleEditMentor}
+          />
+        );
       default:
         return (
           <HomePage
             onStartChat={handleStartChat}
             onBrowseCategory={handleBrowseCategory}
+            onCreateMentor={handleCreateMentor}
           />
         );
     }
@@ -209,6 +250,7 @@ export default function App() {
               user={user}
               onProfileClick={() => setCurrentPage("profile")}
               onAdminClick={() => setCurrentPage("admin")}
+              onMentorManagerClick={() => setCurrentPage("mentor-manager")}
             />
           </div>
         </header>

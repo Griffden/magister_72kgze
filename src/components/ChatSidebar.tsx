@@ -7,10 +7,10 @@ interface ChatSidebarProps {
 }
 
 export function ChatSidebar({ onOpenChat, currentChatId }: ChatSidebarProps) {
-  const chats = useQuery(api.chats.listByUser) || [];
+  const chats = useQuery(api.chats.list) || [];
 
   // Group chats by mentor
-  const chatsByMentor = chats.reduce((acc, chat) => {
+  const chatsByMentor = chats.reduce((acc: any, chat: any) => {
     if (!chat.mentor) return acc;
     
     const mentorId = chat.mentorId;
@@ -31,7 +31,7 @@ export function ChatSidebar({ onOpenChat, currentChatId }: ChatSidebarProps) {
       </div>
       
       <div className="p-2">
-        {Object.entries(chatsByMentor).map(([mentorId, { mentor, chats }]) => (
+        {Object.entries(chatsByMentor).map(([mentorId, { mentor, chats }]: any) => (
           <div key={mentorId} className="mb-4">
             <div className="flex items-center gap-2 px-2 py-1 mb-2">
               <div className="w-6 h-6 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
@@ -51,7 +51,7 @@ export function ChatSidebar({ onOpenChat, currentChatId }: ChatSidebarProps) {
             </div>
             
             <div className="space-y-1 ml-4">
-              {chats.map((chat) => (
+              {chats.map((chat: any) => (
                 <button
                   key={chat._id}
                   onClick={() => onOpenChat(chat._id)}
