@@ -653,10 +653,7 @@ export function ChatPage({ mentorId, chatId, onBack, onOpenChat, sidebarOpen }: 
             </div>
           )}
           
-          {/* Paste hint */}
-          <div className="mb-3 text-xs text-gray-500">
-            💡 Tip: You can paste images directly with Ctrl+V (Cmd+V on Mac)
-          </div>
+
           
           <div className="flex gap-3 items-end">
             <div className="flex-1">

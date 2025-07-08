@@ -192,7 +192,7 @@ export default function App() {
 
             {/* Footer - Hide on chat pages */}
             {currentPage !== "chat" && (
-              <footer className="bg-[#4f46e5] py-12 px-4 mt-auto">
+              <footer className="bg-gradient-to-r from-indigo-600 to-purple-600 py-12 px-4 mt-auto">
                 <div className="max-w-6xl mx-auto">
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a
@@ -273,7 +273,7 @@ export default function App() {
 
         {/* Footer - Hide on chat pages */}
         {currentPage !== "chat" && (
-          <footer className="bg-[#4f46e5] py-12 px-4 mt-auto">
+          <footer className="bg-gradient-to-r from-indigo-600 to-purple-600 py-12 px-4 mt-auto">
             <div className="max-w-6xl mx-auto">
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a

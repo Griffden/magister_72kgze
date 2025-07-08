@@ -27,6 +27,7 @@ import type * as mentors from "../mentors.js";
 import type * as router from "../router.js";
 import type * as streaming from "../streaming.js";
 import type * as users from "../users.js";
+import type * as vectorSearch from "../vectorSearch.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -51,6 +52,7 @@ declare const fullApi: ApiFromModules<{
   router: typeof router;
   streaming: typeof streaming;
   users: typeof users;
+  vectorSearch: typeof vectorSearch;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

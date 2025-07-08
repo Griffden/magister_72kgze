@@ -1,6 +1,7 @@
 # Magister
   
 This is a project built with [Chef](https://chef.convex.dev) using [Convex](https://convex.dev) as its backend.
+ You can find docs about Chef with useful information like how to deploy to production [here](https://docs.convex.dev/chef).
   
 This project is connected to the Convex deployment named [`usable-horse-260`](https://dashboard.convex.dev/d/usable-horse-260).
   

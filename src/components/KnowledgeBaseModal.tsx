@@ -121,8 +121,11 @@ export function KnowledgeBaseModal({ isOpen, onClose, mentorId }: KnowledgeBaseM
                 onClick={async () => {
                   setIsGenerating(true);
                   try {
-                    const result = await generateKnowledgeBase({ mentorId });
-                    toast.success(`Generated ${result.documentsCreated} knowledge documents!`);
+                    const result = await generateKnowledgeBase({ 
+                      mentorId, 
+                      documents: documents.map(doc => ({ title: doc.title, content: doc.content }))
+                    });
+                    toast.success(result);
                   } catch (error) {
                     toast.error("Failed to generate knowledge base. Please set your OpenAI API key in environment variables.");
                   } finally {
