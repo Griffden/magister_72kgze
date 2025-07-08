@@ -156,7 +156,7 @@ export default function App() {
         ) : (
           // Mobile users see main app interface with sign-in button
           <>
-            <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm h-16 flex justify-between items-center border-b shadow-sm px-4">
+            <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm h-20 flex justify-between items-center border-b shadow-sm px-4">
               <div className="flex items-center gap-3">
                 {/* Logo */}
                 {logoUrl && (
@@ -167,7 +167,7 @@ export default function App() {
                     <img
                       src={logoUrl}
                       alt="Logo"
-                      className="h-[68px] w-auto object-contain"
+                      className="h-[95px] w-auto object-contain"
                     />
                   </button>
                 )}
@@ -220,7 +220,7 @@ export default function App() {
       </Unauthenticated>
 
       <Authenticated>
-        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm h-16 flex justify-between items-center border-b shadow-sm px-4">
+        <header className="sticky top-0 z-20 bg-white/80 backdrop-blur-sm h-20 flex justify-between items-center border-b shadow-sm px-4">
           <div className="flex items-center gap-3">
             {/* Sidebar toggle - always visible when authenticated */}
             <button
@@ -239,7 +239,7 @@ export default function App() {
                 <img
                   src={logoUrl}
                   alt="Logo"
-                  className="h-[68px] w-auto object-contain"
+                  className="h-[95px] w-auto object-contain"
                 />
               </button>
             )}

@@ -32,13 +32,13 @@ export function LandingPage({ onShowAuth }: LandingPageProps) {
       {/* Header */}
       <header className="relative z-10 bg-white/80 backdrop-blur-sm border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
+          <div className="flex justify-between items-center py-2">
             <div className="flex items-center gap-3">
               {logoUrl && (
                 <img
                   src={logoUrl}
                   alt="Logo"
-                  className="h-[68px] w-auto object-contain"
+                  className="h-[95px] w-auto object-contain"
                 />
               )}
             </div>
@@ -221,7 +221,7 @@ export function LandingPage({ onShowAuth }: LandingPageProps) {
       </section>
 
       {/* CTA Section with X Logo */}
-      <section className="py-20 pb-16 bg-gradient-to-r from-indigo-600 to-purple-600">
+      <section className="py-20 pb-8 bg-gradient-to-r from-indigo-600 to-purple-600">
         <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-white mb-6">
             Ready to accelerate your growth?
@@ -240,7 +240,7 @@ export function LandingPage({ onShowAuth }: LandingPageProps) {
             </button>
           </div>
 
-          <div className="flex items-center justify-center gap-8 text-indigo-200 text-sm mb-8">
+          <div className="flex items-center justify-center gap-8 text-indigo-200 text-sm mb-4">
             <div className="flex items-center gap-2">
               <CheckIcon className="w-4 h-4" />
               <span>No credit card required</span>
